@@ -59,7 +59,6 @@ public class BottomTools {
     private void initView() {
         mLayoutParams.gravity = Gravity.BOTTOM;
         mLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        mLayoutParams.height =
     }
 
     public class Builder {
