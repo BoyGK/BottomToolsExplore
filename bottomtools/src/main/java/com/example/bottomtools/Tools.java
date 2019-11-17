@@ -1,11 +1,34 @@
 package com.example.bottomtools;
 
-import android.view.View;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.view.LayoutInflater;
 
-public class Tools {
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-    public View getView() {
-        return null;
+class Tools {
+
+    private Activity mActivity;
+
+    private ViewPager mViewPager;
+    private PagerAdapter mAdapter;
+
+
+    Tools(Activity activity, PagerAdapter adapter) {
+        this.mActivity = activity;
+        this.mAdapter = adapter;
+        initView();
+    }
+
+    @SuppressLint("InflateParams")
+    private void initView() {
+        mViewPager = (ViewPager) LayoutInflater.from(mActivity).inflate(R.layout.tools, null);
+        mViewPager.setAdapter(mAdapter);
+    }
+
+    ViewPager getView() {
+        return mViewPager;
     }
 
 }

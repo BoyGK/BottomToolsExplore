@@ -20,6 +20,10 @@ public class WindowResizeLayout extends RelativeLayout {
     private boolean isSoftInputShow = false;
     private LayoutChangeCallBack mLayoutChangeCallBack;
 
+    public boolean isSoftInputShow() {
+        return isSoftInputShow;
+    }
+
     public void setLayoutChangeCallBack(LayoutChangeCallBack mLayoutChangeCallBack) {
         this.mLayoutChangeCallBack = mLayoutChangeCallBack;
     }
@@ -27,18 +31,19 @@ public class WindowResizeLayout extends RelativeLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        int statusHeight = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        statusHeight = statusHeight > 0 ? getResources().getDimensionPixelSize(statusHeight) : 0;
-        h = h + statusHeight;
-        int tbHeight = (int) (getResources().getDisplayMetrics().heightPixels * 0.3f);
-        if (h > oldh && h - oldh > tbHeight) {
-            isSoftInputShow = true;
-        } else if (h < oldh && oldh - h > tbHeight) {
+//        int statusHeight = getResources().getIdentifier("status_bar_height", "dimen", "android");
+//        statusHeight = statusHeight > 0 ? getResources().getDimensionPixelSize(statusHeight) : 0;
+//        h = h + statusHeight;
+        int tHeight = (int) (getResources().getDisplayMetrics().heightPixels * 0.3f);
+        int bHeight = (int) (getResources().getDisplayMetrics().heightPixels * 0.6f);
+        if (h > oldh && h - oldh > tHeight && h - oldh < bHeight) {
             isSoftInputShow = false;
+        } else if (h < oldh && oldh - h > tHeight && oldh - h < bHeight) {
+            isSoftInputShow = true;
         }
 
         if (mLayoutChangeCallBack != null) {
-            if (Math.abs(oldh - h) > tbHeight) {
+            if (Math.abs(oldh - h) > tHeight && Math.abs(oldh - h) < bHeight) {
                 mLayoutChangeCallBack.layoutChange(isSoftInputShow, oldh - h);
             }
         }
