@@ -2,9 +2,10 @@ package com.example.bottomtools.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
 
-public class WindowResizeLayout extends RelativeLayout {
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+public class WindowResizeLayout extends ConstraintLayout {
     public WindowResizeLayout(Context context) {
         super(context);
     }
