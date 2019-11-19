@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
     <Button
@@ -15,7 +16,7 @@
         android:id="@+id/btn_close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_open"
+        app:layout_constraintTop_toBottomOf="@id/btn_open"
         android:text="close" />
 
 </com.example.bottomtools.widget.WindowResizeLayout>

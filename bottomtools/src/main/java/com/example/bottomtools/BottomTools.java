@@ -2,6 +2,7 @@ package com.example.bottomtools;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,12 @@ public class BottomTools {
         mParentLayout = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
         mWindowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
         mLayoutParams = new WindowManager.LayoutParams();
+        if (mParentLayout instanceof WindowResizeLayout) {
+            ((WindowResizeLayout) mParentLayout).setFitStatusBar(
+                    activity.getWindow().getStatusBarColor() == Color.TRANSPARENT
+                            || activity.getWindow().getAttributes().flags == WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+            );
+        }
     }
 
     private void initListener() {
@@ -96,7 +103,7 @@ public class BottomTools {
     }
 
     private ViewPager show() {
-        if (mFixSoftInput) {
+        if (mFixSoftInput && !((WindowResizeLayout) mParentLayout).isSoftInputShow()) {
             needShow = true;
             openSoftInput();
         } else {
@@ -114,6 +121,10 @@ public class BottomTools {
             closeSoftInput();
         }
         mTools.getView().setVisibility(View.GONE);
+        if (!withSoftInput) {
+            //纠正软键盘状态
+            ((WindowResizeLayout) mParentLayout).setSoftInputShow(true);
+        }
     }
 
     private void setFixSoftInput(boolean fixSoftInput) {
@@ -169,6 +180,10 @@ public class BottomTools {
 
         public void dismiss() {
             mBottomTools.dismiss();
+        }
+
+        public void dismiss(boolean withSoft) {
+            mBottomTools.dismiss(withSoft);
         }
     }
 }

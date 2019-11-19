@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bottomtools.BasePagerAdapter;
 import com.example.bottomtools.BottomTools;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +24,16 @@ public class MainActivity extends AppCompatActivity {
         textView.setGravity(Gravity.CENTER);
         textView.setBackgroundColor(Color.WHITE);
 
-        final BottomTools.Builder builder = new BottomTools.Builder(this, textView)
+        TextView textView2 = new TextView(this);
+        textView2.setText("BGQ");
+        textView2.setTextSize(50);
+        textView2.setGravity(Gravity.CENTER);
+        textView2.setBackgroundColor(Color.WHITE);
+
+//        final BottomTools.Builder builder = new BottomTools.Builder(this, textView)
+//                .setFixSoftInputHeight(true);
+
+        final BottomTools.Builder builder = new BottomTools.Builder(this, new BasePagerAdapter(new View[]{textView, textView2}))
                 .setFixSoftInputHeight(true);
 
         findViewById(R.id.btn_open).setOnClickListener(new View.OnClickListener() {
@@ -33,10 +43,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+//        findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                builder.dismiss();
+//            }
+//        });
+
         findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                builder.dismiss();
+                builder.dismiss(false);
             }
         });
 
