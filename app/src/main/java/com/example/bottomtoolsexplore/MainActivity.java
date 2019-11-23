@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 //                .setFixSoftInputHeight(true);
 
         final BottomTools.Builder builder = new BottomTools.Builder(this, new BasePagerAdapter(new View[]{textView, textView2}))
-                .setFixSoftInputHeight(false)
+                .setFixSoftInputHeight(true)
                 .setBottomToolsHeight(1000);
 
         findViewById(R.id.btn_open).setOnClickListener(new View.OnClickListener() {

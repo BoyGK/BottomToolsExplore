@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.example.bottomtools.WindowResizeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/btn_open"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="open" />
+        android:text="open"/>
 
     <Button
         android:id="@+id/btn_close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btn_open"
-        android:text="close" />
+        android:text="close"
+        app:layout_constraintTop_toBottomOf="@id/btn_open" />
 
     <Button
         android:id="@+id/btn_close_with"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btn_close"
-        android:text="close with" />
+        android:text="close with"
+        app:layout_constraintTop_toBottomOf="@id/btn_close" />
 
 </com.example.bottomtools.WindowResizeLayout>

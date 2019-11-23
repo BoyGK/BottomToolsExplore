@@ -60,6 +60,11 @@ public class BottomTools {
                             || activity.getWindow().getAttributes().flags == WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
             );
         }
+        //全屏模式适配
+        if (activity.getWindow().getAttributes().flags >= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                || activity.getWindow().getAttributes().flags >= WindowManager.LayoutParams.FLAG_FULLSCREEN) {
+            new FullScreenWindowTools(activity);
+        }
     }
 
     /**

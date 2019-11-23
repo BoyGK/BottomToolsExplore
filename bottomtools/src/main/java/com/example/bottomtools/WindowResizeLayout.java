@@ -61,11 +61,6 @@ public class WindowResizeLayout extends ConstraintLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (isFitStatusBar) {
-            int statusHeight = getResources().getIdentifier("status_bar_height", "dimen", "android");
-            statusHeight = statusHeight > 0 ? getResources().getDimensionPixelSize(statusHeight) : 0;
-            h = h + statusHeight;
-        }
         int tHeight = (int) (getResources().getDisplayMetrics().heightPixels * 0.25f);
         int bHeight = (int) (getResources().getDisplayMetrics().heightPixels * 0.55f);
         if (h > oldh && h - oldh > tHeight && h - oldh < bHeight) {
