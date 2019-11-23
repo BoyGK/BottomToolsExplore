@@ -12,4 +12,8 @@ class FullScreenWindowTools {
     FullScreenWindowTools(Activity activity) {
         mActivity = activity;
     }
+
+    void fit(){
+
+    }
 }
