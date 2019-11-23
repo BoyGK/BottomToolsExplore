@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
 //                .setFixSoftInputHeight(true);
 
         final BottomTools.Builder builder = new BottomTools.Builder(this, new BasePagerAdapter(new View[]{textView, textView2}))
-                .setFixSoftInputHeight(true);
+                .setFixSoftInputHeight(false)
+                .setBottomToolsHeight(1000);
 
         findViewById(R.id.btn_open).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                builder.dismiss();
-//            }
-//        });
+        findViewById(R.id.btn_close_with).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                builder.dismiss();
+            }
+        });
 
         findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
             @Override

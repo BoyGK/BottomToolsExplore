@@ -13,8 +13,6 @@ import androidx.annotation.IdRes;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.bottomtools.widget.WindowResizeLayout;
-
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class BottomTools {
@@ -29,7 +27,7 @@ public class BottomTools {
 
     private Tools mTools;
 
-    private boolean mFixSoftInput = false;
+    private boolean mFixSoftInput = true;
     private boolean needShow = false;
 
     private int mToolsHeight = 0;
@@ -52,6 +50,7 @@ public class BottomTools {
 
     private void init(Activity activity) {
         this.mActivity = activity;
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         mParentLayout = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
         mWindowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
         mLayoutParams = new WindowManager.LayoutParams();
@@ -63,6 +62,9 @@ public class BottomTools {
         }
     }
 
+    /**
+     * 主要注册监听软键盘状态
+     */
     private void initListener() {
         if (mParentLayout instanceof WindowResizeLayout) {
             ((WindowResizeLayout) mParentLayout).setLayoutChangeCallBack(new WindowResizeLayout.LayoutChangeCallBack() {
@@ -70,8 +72,7 @@ public class BottomTools {
                 public void layoutChange(boolean isSoftInputShow, int height) {
                     if (mFixSoftInput && isSoftInputShow) {
                         if (checkForUpDateView()) {
-                            mToolsHeight = height;
-                            upDateView();
+                            upDateViewHeight(height);
                         }
                         if (needShow) {
                             mTools.getView().setVisibility(View.VISIBLE);
@@ -92,14 +93,17 @@ public class BottomTools {
         mWindowManager.addView(mTools.getView(), mLayoutParams);
     }
 
-    private void upDateView() {
-        mLayoutParams.height = mToolsHeight;
+    /**
+     * 更新bottomTools高度
+     */
+    private void upDateViewHeight(int height) {
+        mToolsHeight = height;
+        mLayoutParams.height = height;
         mWindowManager.updateViewLayout(mTools.getView(), mLayoutParams);
     }
 
     private boolean checkForUpDateView() {
-        return (mFixSoftInput && mToolsHeight == defaultHeight())
-                || (!mFixSoftInput && mToolsHeight != defaultHeight());
+        return (mFixSoftInput && mToolsHeight != ((WindowResizeLayout) mParentLayout).getSoftInputHeight());
     }
 
     private ViewPager show() {
@@ -121,34 +125,44 @@ public class BottomTools {
             closeSoftInput();
         }
         mTools.getView().setVisibility(View.GONE);
-        if (!withSoftInput) {
-            //纠正软键盘状态
-            ((WindowResizeLayout) mParentLayout).setSoftInputShow(true);
-        }
     }
 
+    /**
+     * fixSoftInput设置为true时，bottomTools开启高度由软键盘高度确认
+     * 所以此方法会首先开启软键盘，然后在软件盘上方显示bottomTools
+     * 设置false时，SOFT_INPUT_ADJUST_RESIZE不会有效果
+     */
     private void setFixSoftInput(boolean fixSoftInput) {
         this.mFixSoftInput = fixSoftInput;
     }
 
+    /**
+     * 软键盘的开启仅会在mFixSoftInput = true时调用
+     */
     private void openSoftInput() {
         if (!((WindowResizeLayout) mParentLayout).isSoftInputShow()) {
             InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.toggleSoftInput(0, 0);
+                imm.toggleSoftInput(0, 1);
             }
         }
     }
 
+    /**
+     * 软键盘的关闭仅会在mFixSoftInput = true时调用
+     */
     private void closeSoftInput() {
         if (((WindowResizeLayout) mParentLayout).isSoftInputShow()) {
             InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.toggleSoftInput(0, 0);
+                imm.toggleSoftInput(1, 0);
             }
         }
     }
 
+    /**
+     * bottomTools默认高度
+     */
     private int defaultHeight() {
         return (int) (mActivity.getResources().getDisplayMetrics().density * DEFAULT_HEIGHT);
     }
@@ -171,6 +185,17 @@ public class BottomTools {
 
         public Builder setFixSoftInputHeight(boolean fixSoftInput) {
             mBottomTools.setFixSoftInput(fixSoftInput);
+            return this;
+        }
+
+        /**
+         * 设置高度
+         * fixSoftInputHeight > thisHeight > defaultHeight
+         *
+         * @param height px
+         */
+        public Builder setBottomToolsHeight(int height) {
+            mBottomTools.upDateViewHeight(height);
             return this;
         }
 
